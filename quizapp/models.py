@@ -18,7 +18,7 @@ class Question(models.Model):
     text = models.CharField(max_length=250)
 
     def __str__(self):
-        return self.text
+        return f"{self.quiz.title}, {self.text}"
 
 
 class Choice(models.Model):
@@ -28,4 +28,4 @@ class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.text
+        return f"{self.question.quiz.title}, {self.question.text}, {self.text}"

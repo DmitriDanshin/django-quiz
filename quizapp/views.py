@@ -6,6 +6,7 @@ from django.shortcuts import render
 from quiz.dto import QuestionDTO, ChoiceDTO, QuizDTO, AnswersDTO, AnswerDTO
 from quiz.services import QuizResultService
 from quizapp.models import Quiz, Question, Choice
+from quizapp.settings import DEFAULT_QUIZ_UUID
 
 
 def get_quiz(quiz_uuid) -> QuizDTO:
@@ -25,9 +26,24 @@ def get_quiz(quiz_uuid) -> QuizDTO:
 
 
 class QuizView:
-    answers_dto = AnswersDTO(quiz_uuid="19b793075f85495fb4569cce9b263602", answers=[])
-    quiz_dto: QuizDTO = get_quiz("19b793075f85495fb4569cce9b263602")
-    questions = quiz_dto.questions
+
+    def __init__(self):
+        self.set_quiz(DEFAULT_QUIZ_UUID)
+        self.answers_dto = AnswersDTO(quiz_uuid=DEFAULT_QUIZ_UUID, answers=[])
+        self.quiz_dto: QuizDTO = get_quiz(DEFAULT_QUIZ_UUID)
+        self.questions = self.quiz_dto.questions
+
+    def set_quiz(self, quiz_uuid: str = DEFAULT_QUIZ_UUID):
+        self.answers_dto = AnswersDTO(quiz_uuid, answers=[])
+        self.quiz_dto: QuizDTO = get_quiz(quiz_uuid)
+        self.questions = self.quiz_dto.questions
+
+    def welcome(self, request: HttpRequest):
+        context = {
+            "quizzes": Quiz.objects.all()
+        }
+
+        return render(request, "index.html", context)
 
     def done(self, request):
         result = QuizResultService(self.quiz_dto, deepcopy(self.answers_dto)).get_result()
@@ -45,7 +61,8 @@ class QuizView:
             )
         )
 
-    def index(self, request: HttpRequest, question_id: int) -> HttpResponse:
+    def question(self, request: HttpRequest, quiz_uuid: str, question_id: int) -> HttpResponse:
+        self.set_quiz(quiz_uuid)
         choices = list(request.GET.items())
         if question_id >= len(self.questions):
             self.append_answer(question_id, choices)
@@ -54,6 +71,7 @@ class QuizView:
             self.append_answer(question_id, choices)
         context = {
             "question": self.questions[question_id],
+            "quiz_uuid": quiz_uuid,
             "next": question_id + 1
         }
-        return render(request, "index.html", context)
+        return render(request, "question.html", context)

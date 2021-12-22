@@ -4,6 +4,6 @@ from quizapp.views import QuizView
 
 qv = QuizView()
 urlpatterns = [
-    path("question/<int:question_id>", qv.index, name='index'),
-    # path("done/<int:result>", qv.done, name='done'),
+    path("quiz/<str:quiz_uuid>/question/<int:question_id>", qv.question, name='quiz'),
+    path("", qv.welcome, name="welcome")
 ]
