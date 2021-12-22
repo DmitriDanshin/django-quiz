@@ -1,0 +1,16 @@
+{% extends "layout/base.html" %}
+{% block content %}
+    <h1>Hello world</h1>
+    {{ quiestion.text }}
+    <form method="get" action="{% url "quiz" quiz_uuid next %}">
+        <h3>{{ question.text }}</h3>
+        <br>
+        {% for choice in question.choices %}
+            <label>
+                {{ choice.text }}
+                <input type="checkbox" name="{{ choice.uuid }}" value="{% if choice.is_correct %}1{% endif %}">
+            </label>
+        {% endfor %}
+        <input type="submit">
+    </form>
+{% endblock %}
