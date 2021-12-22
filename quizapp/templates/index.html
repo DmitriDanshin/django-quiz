@@ -1,7 +1,6 @@
 {% extends "layout/base.html" %}
 {% block content %}
-    {% for quiz in quizzes %}
-        <a href="{% url 'quiz' quiz.uuid 0 %}">{{ quiz.title }}</a>
-    {% endfor %}
-
+  <div class="container">
+    <h1>Нажмите на "Все тесты", чтобы начать тестирование.</h1>
+  </div>
 {% endblock %}
