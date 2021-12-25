@@ -1,6 +1,5 @@
 from typing import List
 from copy import deepcopy
-
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from quiz.dto import QuestionDTO, ChoiceDTO, QuizDTO, AnswersDTO, AnswerDTO
@@ -9,7 +8,7 @@ from quizapp.models import Quiz, Question, Choice
 from quizapp.settings import DEFAULT_QUIZ_UUID
 
 
-def get_quiz(quiz_uuid) -> QuizDTO:
+def get_quiz(quiz_uuid: str) -> QuizDTO:
     quiz = Quiz.objects.get(uuid=quiz_uuid)
     questions = Question.objects.filter(quiz_id=quiz_uuid)
     questions_dto = [
@@ -26,28 +25,29 @@ def get_quiz(quiz_uuid) -> QuizDTO:
 
 
 class QuizView:
-
     def __init__(self):
-        self.set_quiz(DEFAULT_QUIZ_UUID)
+        self.set_quiz(quiz_uuid=DEFAULT_QUIZ_UUID)
         self.answers_dto = AnswersDTO(quiz_uuid=DEFAULT_QUIZ_UUID, answers=[])
         self.quiz_dto: QuizDTO = get_quiz(DEFAULT_QUIZ_UUID)
         self.questions = self.quiz_dto.questions
         self.quizzes = Quiz.objects.all()
         self.answers: List[AnswerDTO] = []
 
-    def set_quiz(self, answers, quiz_uuid: str = DEFAULT_QUIZ_UUID):
+    def set_quiz(self, answers=None, quiz_uuid: str = DEFAULT_QUIZ_UUID) -> None:
+        if answers is None:
+            answers = []
         self.answers_dto = AnswersDTO(quiz_uuid, answers=answers)
         self.quiz_dto: QuizDTO = get_quiz(quiz_uuid)
         self.questions = self.quiz_dto.questions
 
-    def welcome(self, request: HttpRequest):
+    def welcome(self, request: HttpRequest) -> HttpRequest:
         context = {
             "quizzes": self.quizzes
         }
 
         return render(request, "index.html", context)
 
-    def done(self, request):
+    def done(self, request: HttpRequest) -> HttpResponse:
         result = QuizResultService(self.quiz_dto, deepcopy(self.answers_dto)).get_result()
         context = {
             "result": result,

@@ -16,9 +16,9 @@ class QuizResultService:
                 .filter(question_id=answer.question_uuid) \
                 .values_list("uuid")
             right_choices = {str(choice[0]) for choice in right_choices}
-            choices_dto = {choice[0] for choice in answer.choices}
+            selected_choices = {choice[0] for choice in answer.choices}
 
-            if len(right_choices | choices_dto) == len(right_choices):
+            if all(choice in right_choices for choice in selected_choices):
                 right_answers += 1
 
         result = right_answers / length

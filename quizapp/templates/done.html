@@ -1,5 +1,8 @@
 {% extends "layout/base.html" %}
 {% block content %}
-    <h1>Done</h1>
-    {{ result }}
+  <div class="container text-center">
+    <h2>Тест пройден. Ваш результат: </h2>
+    <h3> {{ result }}</h3>
+    <a class="nav-link active" aria-current="page" href="{% url "welcome" %}">Вернуться на главную</a>
+  </div>
 {% endblock %}
