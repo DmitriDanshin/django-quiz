@@ -2,7 +2,7 @@
 {% block content %}
   <div class="container text-center">
     <h2>Тест пройден. Ваш результат: </h2>
-    <h3> {{ result|floatformat:2 }}</h3>
+    <h3> {{ result }}</h3>
     <a class="nav-link active" aria-current="page" href="{% url "welcome" %}">Вернуться на главную</a>
   </div>
 {% endblock %}

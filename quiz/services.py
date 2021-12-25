@@ -10,6 +10,7 @@ class QuizResultService:
     def get_result(self) -> float:
         length: int = len(self.answers_dto.answers)
         right_answers: int = 0
+
         for answer in self.answers_dto.answers:
             right_choices = Choice.objects \
                 .filter(is_correct=True) \
@@ -23,4 +24,4 @@ class QuizResultService:
 
         result = right_answers / length
 
-        return result
+        return round(result, 2)

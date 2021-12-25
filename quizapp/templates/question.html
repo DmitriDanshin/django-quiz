@@ -10,12 +10,11 @@
           <ul class="list-group">
             {% for choice in choices %}
               <li class="list-group-item">
-
                 <div class="checkbox">
                   <label>
                   {{ choice.1 }}.
-                    <input type="checkbox" name="{{ choice.uuid }}"
-                           value="{% if choice.is_correct %}1{% endif %}">
+                    <input type="checkbox" name="{{ choice.0.uuid }}"
+                           value="{% if choice.0.is_correct %}1{% endif %}">
                     {{ choice.0.text }}
                   </label>
                 </div>
