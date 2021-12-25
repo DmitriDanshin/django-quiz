@@ -1,3 +1,3 @@
 from typing import Final
 
-DEFAULT_QUIZ_UUID: Final = "19b793075f85495fb4569cce9b263602"
+DEFAULT_QUIZ_UUID: Final = "4bf20aea55934c9d9c7abc086e9b2cb4"

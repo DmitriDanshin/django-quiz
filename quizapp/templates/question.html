@@ -8,13 +8,15 @@
         </div>
         <div class="panel-body">
           <ul class="list-group">
-            {% for choice in question.choices %}
+            {% for choice in choices %}
               <li class="list-group-item">
+
                 <div class="checkbox">
                   <label>
+                  {{ choice.1 }}.
                     <input type="checkbox" name="{{ choice.uuid }}"
                            value="{% if choice.is_correct %}1{% endif %}">
-                    {{ choice.text }}
+                    {{ choice.0.text }}
                   </label>
                 </div>
               </li>

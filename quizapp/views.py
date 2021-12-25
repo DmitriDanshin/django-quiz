@@ -78,6 +78,7 @@ class QuizView:
 
         context = {
             "question": self.questions[question_id],
+            "choices": zip(self.questions[question_id].choices, "ABCD"),
             "quiz_uuid": quiz_uuid,
             "next": question_id + 1,
             "quizzes": self.quizzes
